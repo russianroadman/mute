@@ -18,7 +18,7 @@ class MuteUpdateHandler(
     private var selected = muteServicesMap.entries.first().value
 
     override fun onUpdateReceived(update: Update, sender: AbsSender) {
-        selected.examine(update.message)
+        if (update.hasMessage()) selected.examine(update.message)
     }
 
     fun setMuteService(className: String){
