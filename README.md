@@ -17,10 +17,10 @@ To stop bot, use GET request `/stop` and to start again, use `/start`
 
 You can use `/get-muter-associations` GET request, to get list of available anti-voice-message services
 
-By default there are two:
+By default, there are two:
 - VoiceMessageMeanResponder (Respond angrily to voice message)
 - VoiceMessageTerminator (Delete voice message)
 
-You can create implementation of `MuteService.kt` class and it will be added to list of services as well
+You can create implementation of `MuteService.kt` class, and it will be added to list of services as well
 
 To set service without restarting bot, use `/set-muter?value=<class_name>` GET request, where `class_name` is any service from `/get-muter-associations` response list

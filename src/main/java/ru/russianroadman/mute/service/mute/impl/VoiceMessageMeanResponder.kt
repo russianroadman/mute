@@ -4,11 +4,11 @@ import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Message
 import ru.russianroadman.mute.service.mute.MuteService
-import ru.russianroadman.mute.service.tgapi.TelegramMessageSenderService
+import ru.russianroadman.mute.service.tgapi.MessageSender
 
 @Service
 class VoiceMessageMeanResponder(
-    private val telegramMessageSenderService: TelegramMessageSenderService
+    private val messageSender: MessageSender
 ) : MuteService {
 
     override fun examine(message: Message) {
@@ -18,7 +18,7 @@ class VoiceMessageMeanResponder(
     }
 
     private fun respond(message: Message){
-        telegramMessageSenderService.reply(
+        messageSender.reply(
             SendMessage(
                 message.chatId.toString(),
                 getRandomMeanResponse()

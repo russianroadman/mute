@@ -19,7 +19,7 @@ class Bot(
     }
 
     override fun onUpdateReceived(update: Update) {
-        updateHandler.onUpdateReceived(update, this)
+        updateHandler.onUpdateReceived(update)
     }
 
 }

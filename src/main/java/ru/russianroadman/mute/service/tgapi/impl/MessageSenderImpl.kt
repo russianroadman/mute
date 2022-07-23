@@ -7,19 +7,19 @@ import org.telegram.telegrambots.meta.api.methods.ForwardMessage
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
 import ru.russianroadman.mute.Bot
-import ru.russianroadman.mute.service.tgapi.TelegramMessageSenderService
+import ru.russianroadman.mute.service.tgapi.MessageSender
 
 @Service
-class TelegramMessageSenderServiceImpl(
+class MessageSenderImpl(
     private val bot: Bot
-): TelegramMessageSenderService {
+): MessageSender {
 
     override fun send(message: SendMessage) {
         bot.execute(message)
     }
 
-    override fun reply(message: SendMessage, replyToMessageId: Int) {
-        send(message.apply { this.replyToMessageId = replyToMessageId })
+    override fun reply(message: SendMessage, replyMessageId: Int) {
+        send(message.apply { this.replyToMessageId = replyMessageId })
     }
 
     override fun forward(forwardMessage: ForwardMessage) {

@@ -2,7 +2,6 @@ package ru.russianroadman.mute.service.tgapi.impl
 
 import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.objects.Update
-import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.russianroadman.mute.service.mute.MuteService
 import ru.russianroadman.mute.service.tgapi.UpdateHandler
 
@@ -17,7 +16,7 @@ class MuteUpdateHandler(
 
     private var selected = muteServicesMap.entries.first().value
 
-    override fun onUpdateReceived(update: Update, sender: AbsSender) {
+    override fun onUpdateReceived(update: Update) {
         if (update.hasMessage()) selected.examine(update.message)
     }
 

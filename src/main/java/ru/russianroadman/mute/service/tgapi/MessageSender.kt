@@ -9,11 +9,11 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
 /**
  * Service for sending message to client
  */
-interface TelegramMessageSenderService {
+interface MessageSender {
 
     fun send(message: SendMessage)
 
-    fun reply(message: SendMessage, replyToMessageId: Int)
+    fun reply(message: SendMessage, replyMessageId: Int)
 
     fun forward(forwardMessage: ForwardMessage)
 
