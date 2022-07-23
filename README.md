@@ -3,7 +3,7 @@ Telegram bot for dealing with voice messages in group chats
 
 To create telegram bot and get your personal bot name and token, visit https://core.telegram.org/bots
 
-Before start, to use bot you will have to add two system environment variables:
+Before start, to use bot you will have to create two system environment variables:
 - MUTE_BOT_NAME=<bot_name>
 - MUTE_BOT_TOKEN=<bot_token>
 
