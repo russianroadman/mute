@@ -5,7 +5,6 @@ import org.telegram.telegrambots.meta.api.methods.CopyMessage
 import org.telegram.telegrambots.meta.api.methods.ForwardMessage
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
-import org.telegram.telegrambots.meta.bots.AbsSender
 
 /**
  * Service for sending message to client
