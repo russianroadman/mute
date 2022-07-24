@@ -6,20 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.ResponseStatus
-import ru.russianroadman.mute.service.mute.MuteService
+import ru.russianroadman.mute.service.mute.impl.MuteSelector
 import ru.russianroadman.mute.service.tgapi.BotSessionService
-import ru.russianroadman.mute.service.tgapi.impl.MuteUpdateHandler
 
 @Controller
 class MainController(
     private val sessionService: BotSessionService,
-    private val updateHandler: MuteUpdateHandler,
-    muteServices: List<MuteService>
+    private val muteSelector: MuteSelector
 ) {
-
-    private val muteServiceAssociations = muteServices.map {
-        it.javaClass.simpleName
-    }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/start")
@@ -34,15 +28,21 @@ class MainController(
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/set-muter")
+    @GetMapping("/set-mute-service")
     fun setMuteService(@RequestParam value: String){
-        updateHandler.setMuteService(value)
+        muteSelector.select(value)
     }
 
     @ResponseBody
-    @GetMapping("/get-muter-associations")
-    fun getMuteServices(): List<String> {
-        return muteServiceAssociations
+    @GetMapping("/get-mute-service-list")
+    fun getMuteServices(): Set<String> {
+        return muteSelector.getServiceNames()
+    }
+
+    @ResponseBody
+    @GetMapping("/get-current-service")
+    fun getSelectedService(): String {
+        return muteSelector.getSelected().javaClass.simpleName
     }
 
 }
