@@ -17,6 +17,9 @@ class MuteSelector (
 
     private var selected = getDefault()
 
+    /**
+     * @throws NoSuchElementException if className is not present in list of services
+     */
     override fun select(className: String) {
         selected = serviceMap[className] ?:
             throw java.util.NoSuchElementException(
