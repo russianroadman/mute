@@ -15,12 +15,15 @@ When application started, that means bot is already working
 
 To stop bot, use GET request `/stop` and to start again, use `/start`
 
-You can use `/get-muter-associations` GET request, to get list of available anti-voice-message services
+Available GET requests:
+- `stop` - stop bot
+- `start` - start bot
+- `get-mute-service-list`
+- `set-mute-service?value=<service_name>` - set service to handle voice messages (from `get-mute-service-list` list)
+- `get-current-service` - get currently selected service name
 
-By default, there are two:
+By default, there are two MuteService implementations:
 - VoiceMessageMeanResponder (Respond angrily to voice message)
 - VoiceMessageTerminator (Delete voice message)
 
-You can create implementation of `MuteService.kt` class, and it will be added to list of services as well
-
-To set service without restarting bot, use `/set-muter?value=<class_name>` GET request, where `class_name` is any service from `/get-muter-associations` response list
+You can create your own implementation of `MuteService.kt` class, and it will be automatically added to list of services as well
