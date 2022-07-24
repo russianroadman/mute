@@ -6,4 +6,8 @@ interface MuteService {
 
     fun examine(message: Message)
 
+    /**
+     * Usually for human-readable names
+     */
+    fun getName(): String
 }

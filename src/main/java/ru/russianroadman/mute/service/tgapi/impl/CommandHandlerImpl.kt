@@ -55,7 +55,7 @@ class CommandHandlerImpl(
     }
 
     private fun getCurrentService(chatId: String){
-        val currentServiceName = muteSelector.getSelected().javaClass.simpleName
+        val currentServiceName = muteSelector.getSelectedName()
         messageSender.send(
             SendMessage(chatId, "Current service is: $currentServiceName")
         )

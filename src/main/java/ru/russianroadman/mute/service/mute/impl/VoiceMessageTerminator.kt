@@ -17,6 +17,10 @@ class VoiceMessageTerminator(
         }
     }
 
+    override fun getName(): String {
+        return "Delete"
+    }
+
     private fun delete(message: Message){
         messageSender
             .delete(

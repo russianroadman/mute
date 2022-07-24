@@ -17,6 +17,10 @@ class VoiceMessageMeanResponder(
         }
     }
 
+    override fun getName(): String {
+        return "Reply angrily"
+    }
+
     private fun respond(message: Message){
         messageSender.reply(
             SendMessage(

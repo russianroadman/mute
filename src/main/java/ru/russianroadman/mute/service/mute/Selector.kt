@@ -8,6 +8,8 @@ interface Selector<T : Any> {
 
     fun getSelected(): T
 
+    fun getSelectedName(): String
+
     fun getServiceNames(): Set<String>
 
 }

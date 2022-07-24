@@ -42,7 +42,7 @@ class MainController(
     @ResponseBody
     @GetMapping("/get-current-service")
     fun getSelectedService(): String {
-        return muteSelector.getSelected().javaClass.simpleName
+        return muteSelector.getSelectedName()
     }
 
 }

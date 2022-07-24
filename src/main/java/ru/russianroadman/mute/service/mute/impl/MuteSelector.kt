@@ -12,7 +12,7 @@ class MuteSelector (
 
     private val serviceMap: Map<String, MuteService> =
         services.associateBy {
-            it.javaClass.simpleName
+            it.getName()
         }
 
     private var selected = getDefault()
@@ -33,6 +33,10 @@ class MuteSelector (
 
     override fun getSelected(): MuteService {
         return selected
+    }
+
+    override fun getSelectedName(): String {
+        return selected.getName()
     }
 
     override fun getServiceNames(): Set<String> {
