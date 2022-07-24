@@ -18,7 +18,7 @@ To stop bot, use GET request `/stop` and to start again, use `/start`
 Available GET requests:
 - `stop` - stop bot
 - `start` - start bot
-- `get-mute-service-list`
+- `get-mute-service-list` - get available services list
 - `set-mute-service?value=<service_name>` - set service to handle voice messages (from `get-mute-service-list` list)
 - `get-current-service` - get currently selected service name
 
