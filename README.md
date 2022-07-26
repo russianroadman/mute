@@ -7,7 +7,9 @@ Before start, to use bot you will have to create two system environment variable
 - MUTE_BOT_NAME=<bot_name>
 - MUTE_BOT_TOKEN=<bot_token>
 
-This application has two simple implementations for handling voice messages properly:
+This application has multiple simple implementations for handling voice messages properly
+
+For example:
 - Delete
 - Respond angrily
 
