@@ -19,7 +19,9 @@ dependencies {
     implementation 'org.telegram:telegrambots:6.1.0'
 }
 
-
+tasks.jar {
+    enabled = false
+}
 
 tasks.named('test') {
 	useJUnitPlatform()
