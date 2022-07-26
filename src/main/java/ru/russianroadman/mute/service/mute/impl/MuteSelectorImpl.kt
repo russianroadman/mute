@@ -19,10 +19,10 @@ class MuteSelectorImpl (
     /**
      * @throws NoSuchElementException if className is not present in list of services
      */
-    override fun select(className: String) {
-        selected = serviceMap[className] ?:
+    override fun select(name: String) {
+        selected = serviceMap[name] ?:
             throw java.util.NoSuchElementException(
-                "No service associated with $className key"
+                "No service associated with $name key"
             )
     }
 

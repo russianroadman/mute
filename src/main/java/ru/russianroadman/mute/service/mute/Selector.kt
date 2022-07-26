@@ -2,11 +2,17 @@ package ru.russianroadman.mute.service.mute
 
 interface Selector<T : Any> {
 
-    fun select(className: String)
+    /**
+     * Selecting implementation by its name
+     */
+    fun select(name: String)
+
+    /**
+     * Getting selected implementation
+     */
+    fun getSelected(): T
 
     fun getDefault(): T
-
-    fun getSelected(): T
 
     fun getSelectedName(): String
 
