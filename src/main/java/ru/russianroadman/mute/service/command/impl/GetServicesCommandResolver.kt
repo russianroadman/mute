@@ -4,15 +4,15 @@ import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Message
 import ru.russianroadman.mute.data.CommandEnum
-import ru.russianroadman.mute.service.command.CommandService
+import ru.russianroadman.mute.service.command.CommandResolver
 import ru.russianroadman.mute.service.mute.MuteStatefulSelector
 import ru.russianroadman.mute.service.tgapi.MessageSender
 
 @Service
-class GetServicesCommandService(
+class GetServicesCommandResolver(
     private val messageSender: MessageSender,
     private val muteSelector: MuteStatefulSelector
-) : CommandService {
+) : CommandResolver {
 
     override fun execute(message: Message, value: String?) {
         getServices(message.chatId.toString())
