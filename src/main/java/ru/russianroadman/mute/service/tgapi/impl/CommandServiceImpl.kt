@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.MessageEntity
 import ru.russianroadman.mute.config.ConfigCredentialsService
-import ru.russianroadman.mute.data.Command
+import ru.russianroadman.mute.data.CommandEnum
 import ru.russianroadman.mute.service.tgapi.CommandService
 
 @Service
@@ -14,7 +14,7 @@ class CommandServiceImpl(
 
     private val command = "bot_command"
 
-    override fun getCommandsFromMessage(message: Message): List<Command> {
+    override fun getCommandsFromMessage(message: Message): List<CommandEnum> {
 
         if (!messageHasCommand(message)) throw IllegalStateException("Message has no commands")
         val entities = message.entities.filter { checkIsCommand(it) }
@@ -24,15 +24,15 @@ class CommandServiceImpl(
 
     }
 
-    override fun getCommandFromMessage(message: Message): Command {
+    override fun getCommandFromMessage(message: Message): CommandEnum {
         return getCommandsFromMessage(message).first()
     }
 
-    override fun getCommandWithValue(message: Message): Pair<Command, String> {
+    override fun getCommandWithValue(message: Message): Pair<CommandEnum, String> {
         return Pair(getCommandFromMessage(message), getValueFromMessage(message))
     }
 
-    private fun getCommandFromEntity(e: MessageEntity): Command {
+    private fun getCommandFromEntity(e: MessageEntity): CommandEnum {
         return getCommand(getPureCommandFromEntity(e))
     }
 
@@ -50,9 +50,9 @@ class CommandServiceImpl(
         return e.type == command
     }
 
-    private fun getCommand(string: String): Command {
-        if (Command.values().map{it.get().uppercase()}.contains(string.uppercase())){
-            return Command.values().first { it.get().uppercase() == string.uppercase() }
+    private fun getCommand(string: String): CommandEnum {
+        if (CommandEnum.values().map{it.get().uppercase()}.contains(string.uppercase())){
+            return CommandEnum.values().first { it.get().uppercase() == string.uppercase() }
         }
         throw IllegalArgumentException("Command received but not recognized: {$string}")
     }

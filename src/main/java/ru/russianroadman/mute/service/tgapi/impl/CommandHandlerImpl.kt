@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Message
-import ru.russianroadman.mute.data.Command
+import ru.russianroadman.mute.data.CommandEnum
 import ru.russianroadman.mute.service.mute.MuteSelector
 import ru.russianroadman.mute.service.tgapi.CommandHandler
 import ru.russianroadman.mute.service.tgapi.CommandService
@@ -28,9 +28,9 @@ class CommandHandlerImpl(
         val chatId = message.chatId.toString()
 
         when(command){
-            Command.GET_SERVICES -> getServices(chatId)
-            Command.SET_SERVICE -> setService(chatId, value)
-            Command.GET_CURRENT -> getCurrentService(chatId)
+            CommandEnum.GET_SERVICES -> getServices(chatId)
+            CommandEnum.SET_SERVICE -> setService(chatId, value)
+            CommandEnum.GET_CURRENT -> getCurrentService(chatId)
         }
 
     }

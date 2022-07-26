@@ -1,6 +1,6 @@
 package ru.russianroadman.mute.data
 
-enum class Command(private val type: String) {
+enum class CommandEnum(private val type: String) {
 
     GET_SERVICES("services"),
     GET_CURRENT("current"),
