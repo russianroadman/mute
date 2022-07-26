@@ -1,4 +1,4 @@
-package ru.russianroadman.mute.service.mute
+package ru.russianroadman.mute.service
 
 interface Selector<T : Any> {
 
