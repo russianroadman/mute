@@ -5,6 +5,7 @@ import org.telegram.telegrambots.meta.api.methods.CopyMessage
 import org.telegram.telegrambots.meta.api.methods.ForwardMessage
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
+import org.telegram.telegrambots.meta.api.objects.Message
 
 /**
  * Service for sending message to client
@@ -13,7 +14,7 @@ interface MessageSender {
 
     fun send(message: SendMessage)
 
-    fun reply(message: SendMessage, replyMessageId: Int)
+    fun reply(message: SendMessage, replyTo: Message)
 
     fun forward(forwardMessage: ForwardMessage)
 

@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.CopyMessage
 import org.telegram.telegrambots.meta.api.methods.ForwardMessage
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
+import org.telegram.telegrambots.meta.api.objects.Message
 import ru.russianroadman.mute.Bot
 import ru.russianroadman.mute.service.tgapi.MessageSender
 
@@ -18,8 +19,8 @@ class MessageSenderImpl(
         bot.execute(message)
     }
 
-    override fun reply(message: SendMessage, replyMessageId: Int) {
-        send(message.apply { this.replyToMessageId = replyMessageId })
+    override fun reply(message: SendMessage, replyTo: Message) {
+        send(message.apply { this.replyToMessageId = replyTo.messageId })
     }
 
     override fun forward(forwardMessage: ForwardMessage) {

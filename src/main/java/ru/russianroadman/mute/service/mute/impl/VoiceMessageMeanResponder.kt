@@ -18,7 +18,7 @@ class VoiceMessageMeanResponder(
     }
 
     override fun getName(): String {
-        return "Reply angrily"
+        return "Rage"
     }
 
     private fun respond(message: Message){
@@ -27,7 +27,7 @@ class VoiceMessageMeanResponder(
                 message.chatId.toString(),
                 getRandomMeanResponse()
             ),
-            message.messageId
+            message
         )
     }
 
