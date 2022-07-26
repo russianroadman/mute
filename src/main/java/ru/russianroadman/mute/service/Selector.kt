@@ -3,19 +3,18 @@ package ru.russianroadman.mute.service
 interface Selector<T : Any> {
 
     /**
-     * Selecting implementation by its name
+     * Retrieve service from name-service association
      */
-    fun select(name: String)
+    fun getByName(name: String): T
 
     /**
-     * Getting selected implementation
+     * Get names for all services
      */
-    fun getSelected(): T
-
-    fun getDefault(): T
-
-    fun getSelectedName(): String
-
     fun getServiceNames(): Set<String>
+
+    /**
+     *
+     */
+    fun getDefault(): T
 
 }

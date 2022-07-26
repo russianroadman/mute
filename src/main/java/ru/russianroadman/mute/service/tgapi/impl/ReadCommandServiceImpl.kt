@@ -5,12 +5,12 @@ import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.MessageEntity
 import ru.russianroadman.mute.config.ConfigCredentialsService
 import ru.russianroadman.mute.data.CommandEnum
-import ru.russianroadman.mute.service.tgapi.CommandService
+import ru.russianroadman.mute.service.tgapi.ReadCommandService
 
 @Service
-class CommandServiceImpl(
+class ReadCommandServiceImpl(
     private val credentialsService: ConfigCredentialsService
-) : CommandService {
+) : ReadCommandService {
 
     private val command = "bot_command"
 

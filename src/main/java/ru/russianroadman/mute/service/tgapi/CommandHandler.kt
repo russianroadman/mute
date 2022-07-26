@@ -4,6 +4,6 @@ import org.telegram.telegrambots.meta.api.objects.Message
 
 interface CommandHandler {
 
-    fun handleMessageWithCommand(message: Message)
+    fun handle(message: Message)
 
 }

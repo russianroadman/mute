@@ -1,13 +1,13 @@
 package ru.russianroadman.mute.service.mute.impl
 
 import org.springframework.stereotype.Service
-import ru.russianroadman.mute.service.mute.MuteSelector
+import ru.russianroadman.mute.service.mute.MuteStatefulSelector
 import ru.russianroadman.mute.service.mute.MuteService
 
 @Service
-class MuteSelectorImpl (
+class MuteStatefulSelectorImpl (
     services: List<MuteService>
-) : MuteSelector {
+) : MuteStatefulSelector {
 
     private val serviceMap: Map<String, MuteService> =
         services.associateBy {
@@ -20,10 +20,7 @@ class MuteSelectorImpl (
      * @throws NoSuchElementException if className is not present in list of services
      */
     override fun select(name: String) {
-        selected = serviceMap[name] ?:
-            throw java.util.NoSuchElementException(
-                "No service associated with $name key"
-            )
+        selected = getByName(name)
     }
 
     override fun getDefault(): MuteService {
@@ -40,6 +37,13 @@ class MuteSelectorImpl (
 
     override fun getServiceNames(): Set<String> {
         return serviceMap.keys
+    }
+
+    override fun getByName(name: String): MuteService {
+        return serviceMap[name] ?:
+            throw java.util.NoSuchElementException(
+                "No service associated with $name key"
+            )
     }
 
 }
