@@ -16,7 +16,7 @@ class ReadCommandServiceImpl(
 
     override fun getCommandsFromMessage(message: Message): List<CommandEnum> {
 
-        if (!messageHasCommand(message)) throw IllegalStateException("Message has no commands")
+        if (!message.isCommand) throw IllegalStateException("Message has no commands")
         val entities = message.entities.filter { checkIsCommand(it) }
         return entities.map {
             getCommandFromEntity(it)
@@ -55,10 +55,6 @@ class ReadCommandServiceImpl(
             return CommandEnum.values().first { it.get().uppercase() == string.uppercase() }
         }
         throw IllegalArgumentException("Command received but not recognized: {$string}")
-    }
-
-    private fun messageHasCommand(m: Message): Boolean {
-        return m.isCommand
     }
 
     private fun getValueFromMessage(message: Message): String {
