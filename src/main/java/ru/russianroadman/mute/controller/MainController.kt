@@ -45,4 +45,8 @@ class MainController(
         return muteSelector.getSelectedName()
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/ping")
+    fun ping(){}
+
 }

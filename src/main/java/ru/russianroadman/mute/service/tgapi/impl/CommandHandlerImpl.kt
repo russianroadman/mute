@@ -8,7 +8,7 @@ import ru.russianroadman.mute.service.tgapi.ReadCommandService
 import ru.russianroadman.mute.util.EnumUtils.name
 
 @Service
-class SelectiveCommandHandler(
+class CommandHandlerImpl(
     private val commandSelector: CommandSelector,
     private val readCommandService: ReadCommandService
 ) : CommandHandler {
