@@ -7,13 +7,14 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.User
-import ru.russianroadman.mute.service.mute.MuteService
+import ru.russianroadman.mute.service.mute.BanService
 import ru.russianroadman.mute.service.tgapi.MessageSender
+import java.lang.UnsupportedOperationException
 
 @Service
 class TimeoutPenalty(
     private val messageSender: MessageSender
-) : MuteService {
+) : BanService {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -26,36 +27,63 @@ class TimeoutPenalty(
     /*
      * 5 min penalty
      */
-    private val penaltyDurationMillis = 1 * 60 * 1000
+    private var penaltyDurationMillis = 5 * 60 * 1000L
 
-    override fun examine(message: Message) {
-        restrict(message)
+    override fun examine(message: Message): Boolean {
+        if (eraser.keys.map{ it.first }.contains(message.from)){
+            deleteMessage(message.chatId.toString(), message.messageId)
+            return true
+        } else if (message.hasVoice()) {
+            deleteMessage(message.chatId.toString(), message.messageId)
+            penalty(message.from, message.chatId.toString())
+            return true
+        }
+        return false
     }
 
     override fun getName(): String {
         return "Eraser"
     }
 
-    private fun restrict(message: Message){
-        if (eraser.keys.map{ it.first.id }.contains(message.from.id)){
-            deleteMessage(message)
-        } else if (message.hasVoice()) {
-            penalty(message)
+    override fun ban(user: User, chatId: String) {
+        ban(user.id, chatId)
+    }
+
+    override fun unban(user: User, chatId: String) {
+        unban(user.userName, chatId)
+    }
+
+    override fun ban(userId: Long, chatId: String) {
+        return
+    }
+
+    override fun unban(userLogin: String, chatId: String) {
+        removePenalty(userLogin.replace("@", ""), chatId)
+    }
+
+    override fun setTimeoutDuration(millis: Long) {
+        penaltyDurationMillis = millis
+    }
+
+    private fun penalty(user: User, chatId: String){
+        sendBannedMessage(chatId)
+        putIntoMemory(user, chatId)
+    }
+
+    private fun removePenalty(userLogin: String, chatId: String){
+        val key = eraser.keys.first {
+            it.first.userName == userLogin &&
+            it.second == chatId
         }
+        eraser.remove(key)
     }
 
-    private fun penalty(message: Message){
-        sendBannedMessage(message)
-        putIntoMemory(message.from, message.chatId.toString())
-        deleteMessage(message)
-    }
-
-    private fun deleteMessage(message: Message){
+    private fun deleteMessage(chatId: String, messageId: Int){
         messageSender
             .delete(
                 DeleteMessage(
-                    message.chatId.toString(),
-                    message.messageId
+                    chatId,
+                    messageId
                 )
             )
     }
@@ -64,7 +92,7 @@ class TimeoutPenalty(
         eraser[Pair(user, chatId)] = System.currentTimeMillis()
     }
 
-    @Scheduled(fixedRate = 1000) // every second
+    @Scheduled(fixedRate = 10 * 1000) // every 10 sec
     private fun unmute(){
         val time = System.currentTimeMillis()
         eraser
@@ -72,21 +100,17 @@ class TimeoutPenalty(
             .keys // get their userIds
             .forEach {
                 eraser.remove(it)
-                log.info("Un-muted ${it.first.firstName}, userID ${it.first.id}")
-                messageSender.send(
-                    SendMessage(it.second, "Un-muted ${it.first.firstName}")
-                )
+                log.info("Un-muted ${it.first}")
             } // remove amnestied users
     }
 
-    private fun sendBannedMessage(message: Message){
+    private fun sendBannedMessage(chatId: String){
         messageSender.send(
             SendMessage(
-                message.chatId.toString(),
-                "${message.from.firstName}, " +
-                    "be quiet for " +
-                    "${penaltyDurationMillis / 1000 / 60} " +
-                    "minutes ${getRandomCelebratingEmoji()}"
+                chatId,
+                "Be quiet for " +
+                "${penaltyDurationMillis / 1000 / 60} " +
+                "minutes ${getRandomCelebratingEmoji()}"
             )
         )
     }

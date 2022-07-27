@@ -15,8 +15,7 @@ class TelegramUpdateHandler(
 
     override fun onUpdateReceived(update: Update) {
         val message = update.message ?: return
-        handleMessage(message)
-        if (message.isCommand) {
+        if (!handleMessage(message) && message.isCommand) {
             handleCommand(message)
         }
     }
@@ -25,8 +24,8 @@ class TelegramUpdateHandler(
         commandHandler.handle(message)
     }
 
-    private fun handleMessage(message: Message){
-        muteSelector
+    private fun handleMessage(message: Message): Boolean {
+        return muteSelector
             .getSelected()
             .examine(message)
     }

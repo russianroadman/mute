@@ -5,8 +5,9 @@ import org.telegram.telegrambots.meta.api.methods.groupadministration.RestrictCh
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.ChatPermissions
 import org.telegram.telegrambots.meta.api.objects.Message
+import org.telegram.telegrambots.meta.api.objects.User
 import ru.russianroadman.mute.Bot
-import ru.russianroadman.mute.service.mute.MuteService
+import ru.russianroadman.mute.service.mute.BanService
 import ru.russianroadman.mute.service.tgapi.MessageSender
 import java.time.Duration
 
@@ -14,39 +15,61 @@ import java.time.Duration
 class PureTimeoutPenalty(
     private val bot: Bot,
     private val messageSender: MessageSender
-) : MuteService {
+) : BanService {
 
-    private val timeoutDurationMinutes = 1L
+    /*
+     * 5 min penalty
+     */
+    private var timeoutDurationMinutes = 5 * 60 * 1000L
 
-    override fun examine(message: Message) {
+    override fun examine(message: Message): Boolean {
         if (message.hasVoice()){
-            timeout(message)
+            ban(message.from.id, message.chatId.toString())
+            return true
         }
+        return false
     }
 
     override fun getName(): String {
         return "Timeout"
     }
 
-    private fun timeout(message: Message){
-        val chatId = message.chatId.toString()
-        val userId = message.from.id
+    override fun ban(user: User, chatId: String) {
+        ban(user.id, chatId)
+    }
+
+    override fun unban(user: User, chatId: String) {
+        unban(user.userName, chatId)
+    }
+
+    override fun ban(userId: Long, chatId: String) {
+        restrict(userId, chatId)
+    }
+
+    override fun unban(userLogin: String, chatId: String) {
+        return
+    }
+
+    override fun setTimeoutDuration(millis: Long) {
+        timeoutDurationMinutes = millis
+    }
+
+    private fun restrict(userId: Long, chatId: String){
         val permissions = ChatPermissions()
         permissions.canSendMessages = false
         val command = RestrictChatMember(chatId, userId, permissions)
         command.forTimePeriodDuration(Duration.ofMinutes(timeoutDurationMinutes))
         bot.execute(command)
-        sendBannedMessage(message)
+        sendBannedMessage(chatId)
     }
 
-    private fun sendBannedMessage(message: Message){
-        messageSender.reply(
+    private fun sendBannedMessage(chatId: String){
+        messageSender.send(
             SendMessage(
-                message.chatId.toString(),
+                chatId,
                 "Banned for $timeoutDurationMinutes " +
                         "minutes ${getRandomCelebratingEmoji()}"
-            ),
-            message
+            )
         )
     }
 

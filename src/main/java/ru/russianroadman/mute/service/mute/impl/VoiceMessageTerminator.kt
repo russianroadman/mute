@@ -11,10 +11,12 @@ class VoiceMessageTerminator(
     private val messageSender: MessageSender
 ) : MuteService {
 
-    override fun examine(message: Message) {
+    override fun examine(message: Message): Boolean {
         if (message.hasVoice()) {
             delete(message)
+            return true
         }
+        return false
     }
 
     override fun getName(): String {

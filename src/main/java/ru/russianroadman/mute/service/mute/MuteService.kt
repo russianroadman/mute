@@ -4,7 +4,10 @@ import org.telegram.telegrambots.meta.api.objects.Message
 
 interface MuteService {
 
-    fun examine(message: Message)
+    /**
+     * @return true if message was examined positively
+     */
+    fun examine(message: Message): Boolean
 
     /**
      * Usually for human-readable names

@@ -11,10 +11,12 @@ class VoiceMessageMeanResponder(
     private val messageSender: MessageSender
 ) : MuteService {
 
-    override fun examine(message: Message) {
+    override fun examine(message: Message): Boolean {
         if (message.hasVoice()){
             respond(message)
+            return true
         }
+        return false
     }
 
     override fun getName(): String {
