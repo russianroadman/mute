@@ -40,10 +40,14 @@ class MuteStatefulSelectorImpl (
     }
 
     override fun getByName(name: String): MuteService {
-        return serviceMap[name] ?:
-            throw java.util.NoSuchElementException(
-                "No service associated with $name key"
-            )
+
+        return serviceMap
+            .mapKeys {
+                it.key.uppercase()
+            }[name.uppercase()] ?:
+                throw java.util.NoSuchElementException(
+                    "No service associated with $name key"
+                )
     }
 
 }

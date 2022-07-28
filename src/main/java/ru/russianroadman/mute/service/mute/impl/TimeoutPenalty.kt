@@ -30,7 +30,7 @@ class TimeoutPenalty(
     private var penaltyDurationMillis = 5 * 60 * 1000L
 
     override fun examine(message: Message): Boolean {
-        if (eraser.keys.map{ it.first }.contains(message.from)){
+        if (eraser.contains(Pair(message.from, message.chatId.toString()))){
             deleteMessage(message.chatId.toString(), message.messageId)
             return true
         } else if (message.hasVoice()) {

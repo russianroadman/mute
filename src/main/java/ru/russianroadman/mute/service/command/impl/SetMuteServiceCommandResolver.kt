@@ -33,7 +33,9 @@ class SetMuteServiceCommandResolver(
     private fun setService(chatId: String, value: String){
         muteSelector.select(value)
         messageSender.send(
-            SendMessage(chatId, "Selected service $value")
+            SendMessage(chatId,
+                "Selected service ${muteSelector.getSelected().getName()}"
+            )
         )
     }
 

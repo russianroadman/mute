@@ -20,7 +20,7 @@ class PureTimeoutPenalty(
     /*
      * 5 min penalty
      */
-    private var timeoutDurationMinutes = 5 * 60 * 1000L
+    private var timeoutDurationMillis = 5 * 60 * 1000L
 
     override fun examine(message: Message): Boolean {
         if (message.hasVoice()){
@@ -51,14 +51,14 @@ class PureTimeoutPenalty(
     }
 
     override fun setTimeoutDuration(millis: Long) {
-        timeoutDurationMinutes = millis
+        timeoutDurationMillis = millis
     }
 
     private fun restrict(userId: Long, chatId: String){
         val permissions = ChatPermissions()
         permissions.canSendMessages = false
         val command = RestrictChatMember(chatId, userId, permissions)
-        command.forTimePeriodDuration(Duration.ofMinutes(timeoutDurationMinutes))
+        command.forTimePeriodDuration(Duration.ofMillis(timeoutDurationMillis))
         bot.execute(command)
         sendBannedMessage(chatId)
     }
@@ -67,8 +67,8 @@ class PureTimeoutPenalty(
         messageSender.send(
             SendMessage(
                 chatId,
-                "Banned for $timeoutDurationMinutes " +
-                        "minutes ${getRandomCelebratingEmoji()}"
+                "Banned for ${timeoutDurationMillis/1000/60} " +
+                        "min ${getRandomCelebratingEmoji()}"
             )
         )
     }
