@@ -7,42 +7,27 @@ import ru.russianroadman.mute.service.mute.MuteService
 import ru.russianroadman.mute.service.tgapi.MessageSender
 
 @Service
-class VoiceMessageMeanResponder(
+class Pooper(
     private val messageSender: MessageSender
 ) : MuteService {
 
     override fun examine(message: Message): Boolean {
         if (message.hasVoice()){
-            respond(message)
+            poop(message.messageId, message.chatId.toString())
             return true
         }
         return false
     }
 
     override fun getName(): String {
-        return "Rage"
+        return "Poop"
     }
 
-    private fun respond(message: Message){
+    private fun poop(messageId: Int, chatId: String){
         messageSender.reply(
-            SendMessage(
-                message.chatId.toString(),
-                getRandomMeanResponse()
-            ),
-            message.messageId
+            SendMessage(chatId, "💩"),
+            messageId
         )
-    }
-
-    // list of angry emojis in unicode
-    private fun getRandomMeanResponse(): String {
-        return listOf(
-            "\uD83E\uDD2E",
-            "\uD83E\uDD22",
-            "\uD83D\uDC7F",
-            "\uD83D\uDE21",
-            "\uD83E\uDD2C",
-            "\uD83D\uDE20"
-        ).random()
     }
 
 }

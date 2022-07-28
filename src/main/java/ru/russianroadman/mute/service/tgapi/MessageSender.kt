@@ -14,7 +14,7 @@ interface MessageSender {
 
     fun send(message: SendMessage)
 
-    fun reply(message: SendMessage, replyTo: Message)
+    fun reply(message: SendMessage, replyTo: Int)
 
     fun forward(forwardMessage: ForwardMessage)
 

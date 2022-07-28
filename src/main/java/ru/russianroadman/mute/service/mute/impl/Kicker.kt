@@ -9,7 +9,7 @@ import ru.russianroadman.mute.service.mute.BanService
 import java.time.Duration
 
 @Service
-class KickMuteService(
+class Kicker(
     private val bot: Bot
 ) : BanService {
 

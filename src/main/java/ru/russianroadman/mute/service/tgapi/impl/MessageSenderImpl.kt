@@ -19,8 +19,8 @@ class MessageSenderImpl(
         bot.execute(message)
     }
 
-    override fun reply(message: SendMessage, replyTo: Message) {
-        send(message.apply { this.replyToMessageId = replyTo.messageId })
+    override fun reply(message: SendMessage, replyTo: Int) {
+        send(message.apply { this.replyToMessageId = replyTo })
     }
 
     override fun forward(forwardMessage: ForwardMessage) {
