@@ -1,5 +1,7 @@
 package ru.russianroadman.mute.service.mute.impl
 
+import org.slf4j.LoggerFactory
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.methods.groupadministration.RestrictChatMember
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
@@ -17,10 +19,18 @@ class PureTimeoutPenalty(
     private val messageSender: MessageSender
 ) : BanService {
 
+    private val log = LoggerFactory.getLogger(javaClass)
+
     /*
      * 5 min penalty
      */
-    private var timeoutDurationMillis = 5 * 60 * 1000L
+    private var timeoutDurationMillis = 1 * 60 * 1000L
+
+    /*
+     * Key: User, chatID
+     * Value: time in millis when penalty started
+     */
+    private val muted = mutableMapOf<Pair<User, String>, Long>()
 
     override fun examine(message: Message): Boolean {
         if (message.hasVoice()){
@@ -35,7 +45,7 @@ class PureTimeoutPenalty(
     }
 
     override fun ban(user: User, chatId: String) {
-        ban(user.id, chatId)
+        restrict(user, chatId)
     }
 
     override fun unban(user: User, chatId: String) {
@@ -43,24 +53,30 @@ class PureTimeoutPenalty(
     }
 
     override fun ban(userId: Long, chatId: String) {
-        restrict(userId, chatId)
+        return
     }
 
     override fun unban(userLogin: String, chatId: String) {
-        return
+        val permissions = ChatPermissions()
+        permissions.canSendMessages = true
+        val user = muted.keys.first { it.first.userName == userLogin }.first
+        val command = RestrictChatMember(chatId, user.id, permissions)
+        bot.execute(command)
+        log.info("Un-muted ${user.firstName}")
     }
 
     override fun setTimeoutDuration(millis: Long) {
         timeoutDurationMillis = millis
     }
 
-    private fun restrict(userId: Long, chatId: String){
+    private fun restrict(user: User, chatId: String){
         val permissions = ChatPermissions()
         permissions.canSendMessages = false
-        val command = RestrictChatMember(chatId, userId, permissions)
+        val command = RestrictChatMember(chatId, user.id, permissions)
         command.forTimePeriodDuration(Duration.ofMillis(timeoutDurationMillis))
         bot.execute(command)
         sendBannedMessage(chatId)
+        muted[Pair(user, chatId)] = System.currentTimeMillis()
     }
 
     private fun sendBannedMessage(chatId: String){
@@ -82,6 +98,17 @@ class PureTimeoutPenalty(
             "😎",
             "😈"
         ).random()
+    }
+
+    @Scheduled(fixedRate = 10 * 1000) // every 10 sec
+    private fun unmute(){
+        val time = System.currentTimeMillis()
+        muted
+            .filter { time - it.value > timeoutDurationMillis } // get amnestied
+            .keys // get their userIds
+            .forEach {
+                unban(it.first, it.second)
+            } // remove amnestied users
     }
 
 }
