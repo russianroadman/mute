@@ -6,7 +6,8 @@ enum class CommandEnum(private val type: String) {
     GET_CURRENT("current"),
     SET_SERVICE("set"),
     INFO("info"),
-    UNBAN("unban");
+    UNBAN("unban"),
+    SET_DURATION("duration");
 
     fun get(): String {
         return type
