@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.User
 import ru.russianroadman.mute.Bot
 import ru.russianroadman.mute.service.mute.BanService
 import ru.russianroadman.mute.service.tgapi.MessageSender
+import ru.russianroadman.mute.util.Constants.celebratingEmojisList
 import java.time.Duration
 
 @Service
@@ -66,7 +67,7 @@ class PureTimeoutPenalty(
     }
 
     override fun setTimeoutDuration(millis: Long) {
-        timeoutDurationMillis = millis
+        if (millis > 0) timeoutDurationMillis = millis
     }
 
     private fun restrict(user: User, chatId: String){
@@ -90,14 +91,7 @@ class PureTimeoutPenalty(
     }
 
     private fun getRandomCelebratingEmoji(): String {
-        return listOf(
-            "😂",
-            "🤣",
-            "😆",
-            "😝",
-            "😎",
-            "😈"
-        ).random()
+        return celebratingEmojisList.random()
     }
 
     @Scheduled(fixedRate = 10 * 1000) // every 10 sec

@@ -4,12 +4,19 @@ import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.objects.Message
 import ru.russianroadman.mute.data.CommandEnum
 import ru.russianroadman.mute.service.command.CommandResolver
+import ru.russianroadman.mute.service.mute.BanService
 
 @Service
-class SetTimeoutDurationCommandResolver : CommandResolver {
+class SetTimeoutDurationCommandResolver(
+    private val banServices: List<BanService>
+) : CommandResolver {
 
     override fun execute(message: Message, value: String?) {
-        return
+        if (value != null){
+            banServices.forEach {
+                it.setTimeoutDuration(value.toLong())
+            }
+        }
     }
 
     override fun representing(): CommandEnum {

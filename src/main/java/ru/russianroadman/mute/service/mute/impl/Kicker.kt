@@ -44,7 +44,7 @@ class Kicker(
     }
 
     override fun setTimeoutDuration(millis: Long) {
-        kickDurationMillis = millis
+        if (millis > 0) kickDurationMillis = millis
     }
 
     private fun kick(chatId: String, userId: Long) {

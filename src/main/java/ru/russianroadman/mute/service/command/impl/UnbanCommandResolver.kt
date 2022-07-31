@@ -12,8 +12,8 @@ class UnbanCommandResolver(
 ) : CommandResolver {
 
     override fun execute(message: Message, value: String?) {
-        banServices.forEach {
-            if (value != null) {
+        if (value != null) {
+            banServices.forEach {
                 it.unban(value, message.chatId.toString())
             }
         }

@@ -5,6 +5,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Message
 import ru.russianroadman.mute.service.mute.MuteService
 import ru.russianroadman.mute.service.tgapi.MessageSender
+import ru.russianroadman.mute.util.Constants.poopEmoji
 
 @Service
 class Pooper(
@@ -25,7 +26,7 @@ class Pooper(
 
     private fun poop(messageId: Int, chatId: String){
         messageSender.reply(
-            SendMessage(chatId, "💩"),
+            SendMessage(chatId, poopEmoji),
             messageId
         )
     }

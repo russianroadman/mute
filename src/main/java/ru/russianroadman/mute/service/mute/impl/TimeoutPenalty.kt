@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.User
 import ru.russianroadman.mute.service.mute.BanService
 import ru.russianroadman.mute.service.tgapi.MessageSender
-import java.lang.UnsupportedOperationException
+import ru.russianroadman.mute.util.Constants.celebratingEmojisList
 
 @Service
 class TimeoutPenalty(
@@ -62,7 +62,7 @@ class TimeoutPenalty(
     }
 
     override fun setTimeoutDuration(millis: Long) {
-        penaltyDurationMillis = millis
+        if (millis > 0) penaltyDurationMillis = millis
     }
 
     private fun penalty(user: User, chatId: String){
@@ -116,14 +116,7 @@ class TimeoutPenalty(
     }
 
     private fun getRandomCelebratingEmoji(): String {
-        return listOf(
-            "😂",
-            "🤣",
-            "😆",
-            "😝",
-            "😎",
-            "😈"
-        ).random()
+        return celebratingEmojisList.random()
     }
 
 }
