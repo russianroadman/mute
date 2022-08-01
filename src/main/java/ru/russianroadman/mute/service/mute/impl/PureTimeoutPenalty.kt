@@ -35,7 +35,7 @@ class PureTimeoutPenalty(
 
     override fun examine(message: Message): Boolean {
         if (message.hasVoice()){
-            ban(message.from.id, message.chatId.toString())
+            ban(message.from, message.chatId.toString())
             return true
         }
         return false
@@ -53,7 +53,7 @@ class PureTimeoutPenalty(
         unban(user.userName, chatId)
     }
 
-    override fun ban(userId: Long, chatId: String) {
+    override fun ban(userLogin: String, chatId: String) {
         return
     }
 

@@ -46,14 +46,14 @@ class TimeoutPenalty(
     }
 
     override fun ban(user: User, chatId: String) {
-        ban(user.id, chatId)
+        ban(user.userName, chatId)
     }
 
     override fun unban(user: User, chatId: String) {
         unban(user.userName, chatId)
     }
 
-    override fun ban(userId: Long, chatId: String) {
+    override fun ban(userLogin: String, chatId: String) {
         return
     }
 

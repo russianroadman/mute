@@ -1,13 +1,13 @@
 package ru.russianroadman.mute.service.mute.impl
 
 import org.springframework.stereotype.Service
-import ru.russianroadman.mute.service.mute.MuteStatefulSelector
+import ru.russianroadman.mute.service.mute.MuteSelector
 import ru.russianroadman.mute.service.mute.MuteService
 
 @Service
-class MuteStatefulSelectorImpl (
+class MuteSelectorImpl (
     services: List<MuteService>
-) : MuteStatefulSelector {
+) : MuteSelector {
 
     private val serviceMap: Map<String, MuteService> =
         services.associateBy {

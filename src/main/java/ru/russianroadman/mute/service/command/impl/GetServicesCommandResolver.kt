@@ -5,13 +5,13 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Message
 import ru.russianroadman.mute.data.CommandEnum
 import ru.russianroadman.mute.service.command.CommandResolver
-import ru.russianroadman.mute.service.mute.MuteStatefulSelector
+import ru.russianroadman.mute.service.mute.MuteSelector
 import ru.russianroadman.mute.service.tgapi.MessageSender
 
 @Service
 class GetServicesCommandResolver(
     private val messageSender: MessageSender,
-    private val muteSelector: MuteStatefulSelector
+    private val muteSelector: MuteSelector
 ) : CommandResolver {
 
     override fun execute(message: Message, value: String?) {
