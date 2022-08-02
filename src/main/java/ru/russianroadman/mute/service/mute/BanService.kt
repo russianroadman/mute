@@ -6,11 +6,11 @@ interface BanService: MuteService {
 
     fun ban(user: User, chatId: String)
 
-    fun ban(userLogin: String, chatId: String)
+    fun ban(username: String, chatId: String)
 
     fun unban(user: User, chatId: String)
 
-    fun unban(userLogin: String, chatId: String)
+    fun unban(username: String, chatId: String)
 
     fun setTimeoutDuration(millis: Long)
 

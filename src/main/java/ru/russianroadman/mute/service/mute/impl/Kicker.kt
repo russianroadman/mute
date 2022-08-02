@@ -6,11 +6,13 @@ import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.User
 import ru.russianroadman.mute.Bot
 import ru.russianroadman.mute.service.mute.BanService
+import ru.russianroadman.mute.service.other.UserContext
 import java.time.Duration
 
 @Service
 class Kicker(
-    private val bot: Bot
+    private val bot: Bot,
+    private val userContext: UserContext
 ) : BanService {
 
     private var kickDurationMillis = 5 * 60 * 1000L
@@ -27,8 +29,9 @@ class Kicker(
         return "Kick"
     }
 
-    override fun ban(userLogin: String, chatId: String) {
-        return
+    override fun ban(username: String, chatId: String) {
+        val user = userContext.get(username, chatId)
+        kick(chatId, user.id)
     }
 
     override fun ban(user: User, chatId: String) {
@@ -39,7 +42,7 @@ class Kicker(
         unban(user.userName, chatId)
     }
 
-    override fun unban(userLogin: String, chatId: String) {
+    override fun unban(username: String, chatId: String) {
         return
     }
 

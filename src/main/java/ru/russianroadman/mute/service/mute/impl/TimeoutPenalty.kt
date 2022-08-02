@@ -8,12 +8,14 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.User
 import ru.russianroadman.mute.service.mute.BanService
+import ru.russianroadman.mute.service.other.UserContext
 import ru.russianroadman.mute.service.tgapi.MessageSender
 import ru.russianroadman.mute.util.Constants.celebratingEmojisList
 
 @Service
 class TimeoutPenalty(
-    private val messageSender: MessageSender
+    private val messageSender: MessageSender,
+    private val userContext: UserContext
 ) : BanService {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -53,12 +55,13 @@ class TimeoutPenalty(
         unban(user.userName, chatId)
     }
 
-    override fun ban(userLogin: String, chatId: String) {
-        return
+    override fun ban(username: String, chatId: String) {
+        val user = userContext.get(username, chatId)
+        penalty(user, chatId)
     }
 
-    override fun unban(userLogin: String, chatId: String) {
-        removePenalty(userLogin.replace("@", ""), chatId)
+    override fun unban(username: String, chatId: String) {
+        removePenalty(username.replace("@", ""), chatId)
     }
 
     override fun setTimeoutDuration(millis: Long) {

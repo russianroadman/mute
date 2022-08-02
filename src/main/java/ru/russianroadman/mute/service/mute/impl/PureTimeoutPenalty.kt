@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.User
 import ru.russianroadman.mute.Bot
 import ru.russianroadman.mute.service.mute.BanService
+import ru.russianroadman.mute.service.other.UserContext
 import ru.russianroadman.mute.service.tgapi.MessageSender
 import ru.russianroadman.mute.util.Constants.celebratingEmojisList
 import java.time.Duration
@@ -17,7 +18,8 @@ import java.time.Duration
 @Service
 class PureTimeoutPenalty(
     private val bot: Bot,
-    private val messageSender: MessageSender
+    private val messageSender: MessageSender,
+    private val userContext: UserContext
 ) : BanService {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -53,14 +55,15 @@ class PureTimeoutPenalty(
         unban(user.userName, chatId)
     }
 
-    override fun ban(userLogin: String, chatId: String) {
-        return
+    override fun ban(username: String, chatId: String) {
+        val user = userContext.get(username, chatId)
+        restrict(user, chatId)
     }
 
-    override fun unban(userLogin: String, chatId: String) {
+    override fun unban(username: String, chatId: String) {
         val permissions = ChatPermissions()
         permissions.canSendMessages = true
-        val user = muted.keys.first { it.first.userName == userLogin }.first
+        val user = muted.keys.first { it.first.userName == username }.first
         val command = RestrictChatMember(chatId, user.id, permissions)
         bot.execute(command)
         log.info("Un-muted ${user.firstName}")
