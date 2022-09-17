@@ -8,7 +8,8 @@ enum class CommandEnum(private val type: String) {
     INFO("info"),
     UNBAN("unban"),
     SET_DURATION("duration"),
-    BAN("ban");
+    BAN("ban"),
+    SELECT("select");
 
     fun get(): String {
         return type

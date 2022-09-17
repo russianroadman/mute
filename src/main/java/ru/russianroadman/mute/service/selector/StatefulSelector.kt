@@ -1,4 +1,4 @@
-package ru.russianroadman.mute.service
+package ru.russianroadman.mute.service.selector
 
 interface StatefulSelector<T : Any> : Selector<T> {
 

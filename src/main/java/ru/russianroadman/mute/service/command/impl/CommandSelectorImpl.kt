@@ -7,7 +7,7 @@ import ru.russianroadman.mute.util.EnumUtils.name
 
 @Service
 class CommandSelectorImpl(
-    services: List<CommandResolver>
+    private val services: List<CommandResolver>
 ) : CommandSelector {
 
     private val serviceMap: Map<String, CommandResolver> =
@@ -29,6 +29,10 @@ class CommandSelectorImpl(
             throw NoSuchElementException(
                 "No service associated with $name key"
             )
+    }
+
+    override fun amount(): Int {
+        return services.size
     }
 
 }

@@ -17,10 +17,11 @@ class UserContextImpl : UserContext {
     private val userMap = mutableMapOf<String, MutableSet<User>>()
 
     override fun put(chatId: String, user: User) {
-        userMap
-            .getOrPut(chatId) { mutableSetOf() }
-            .add(user)
-        log.info("putting user @${user.userName} to context")
+        if (
+            userMap
+                .getOrPut(chatId) { mutableSetOf() }
+                .add(user)
+        ) log.info("putting user @${user.userName} to context")
     }
 
     override fun put(chatId: String, users: Iterable<User>) {

@@ -6,7 +6,7 @@ import ru.russianroadman.mute.service.mute.MuteService
 
 @Service
 class MuteSelectorImpl (
-    services: List<MuteService>
+    private val services: List<MuteService>
 ) : MuteSelector {
 
     private val serviceMap: Map<String, MuteService> =
@@ -24,7 +24,9 @@ class MuteSelectorImpl (
     }
 
     override fun getDefault(): MuteService {
-        return serviceMap.entries.first().value
+        return serviceMap.entries.first {
+            it.key == "Delete"
+        }.value
     }
 
     override fun getSelected(): MuteService {
@@ -40,14 +42,17 @@ class MuteSelectorImpl (
     }
 
     override fun getByName(name: String): MuteService {
-
         return serviceMap
             .mapKeys {
                 it.key.uppercase()
             }[name.uppercase()] ?:
-                throw java.util.NoSuchElementException(
+                throw NoSuchElementException(
                     "No service associated with $name key"
                 )
+    }
+
+    override fun amount(): Int {
+        return services.size
     }
 
 }
