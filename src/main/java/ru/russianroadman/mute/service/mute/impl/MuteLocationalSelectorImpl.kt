@@ -11,17 +11,17 @@ class MuteLocationalSelectorImpl(
     private val muteSelector: MuteSelector
 ) : MuteLocationalSelector {
 
-    private val selected = mutableMapOf<Location<*>, MuteService>()
+    private val selected = mutableMapOf<Location, MuteService>()
 
-    override fun select(name: String, at: Location<*>) {
+    override fun select(name: String, at: Location) {
         selected[at] = getByName(name)
     }
 
-    override fun getSelected(at: Location<*>): MuteService {
+    override fun getSelected(at: Location): MuteService {
         return getSelectedOrDefault(at)
     }
 
-    override fun getSelectedName(at: Location<*>): String {
+    override fun getSelectedName(at: Location): String {
         return getSelectedOrDefault(at).getName()
     }
 
@@ -41,7 +41,7 @@ class MuteLocationalSelectorImpl(
         return muteSelector.amount()
     }
 
-    private fun getSelectedOrDefault(at: Location<*>): MuteService {
+    private fun getSelectedOrDefault(at: Location): MuteService {
         return selected[at] ?: return getDefault()
     }
 
