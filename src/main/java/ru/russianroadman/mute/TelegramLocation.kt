@@ -4,7 +4,7 @@ import org.telegram.telegrambots.meta.api.objects.Message
 
 class TelegramLocation(
     private val chatId: String
-): Location<String> {
+): Location {
 
     companion object Construct {
         fun fromMessage(message: Message): TelegramLocation {
@@ -12,7 +12,7 @@ class TelegramLocation(
         }
     }
 
-    override fun getId(): String {
+    override fun getId(): Any {
         return chatId
     }
 

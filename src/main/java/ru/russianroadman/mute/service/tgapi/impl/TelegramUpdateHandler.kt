@@ -12,7 +12,6 @@ import ru.russianroadman.mute.service.tgapi.UpdateHandler
 
 @Service
 class TelegramUpdateHandler(
-//    private val muteSelector: MuteSelector,
     private val muteLocationalSelector: MuteLocationalSelector,
     private val commandHandler: CommandHandler,
     private val userContext: UserContext

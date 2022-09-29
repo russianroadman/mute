@@ -1,7 +1,7 @@
 package ru.russianroadman.mute
 
-interface Location<T: Any> {
+interface Location {
 
-    fun getId(): T
+    fun getId(): Any
 
 }
