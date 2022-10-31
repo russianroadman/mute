@@ -2,15 +2,14 @@ package ru.russianroadman.mute.service.tgapi.impl
 
 import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.objects.Message
-import ru.russianroadman.mute.service.command.CommandSelector
+import ru.russianroadman.mute.service.locator.impl.CommandServiceLocator
 import ru.russianroadman.mute.service.tgapi.CommandHandler
 import ru.russianroadman.mute.service.tgapi.ReadCommandService
-import ru.russianroadman.mute.util.EnumUtils.name
 
 @Service
 class CommandHandlerImpl(
-    private val commandSelector: CommandSelector,
-    private val readCommandService: ReadCommandService
+    private val readCommandService: ReadCommandService,
+    private val commandServiceLocator: CommandServiceLocator
 ) : CommandHandler {
 
     override fun handle(message: Message) {
@@ -18,14 +17,9 @@ class CommandHandlerImpl(
         val commandWithValue = readCommandService
             .getCommandWithValue(message)
 
-        commandSelector
-            .getByName(
-                name(commandWithValue.first)
-            )
-            .execute(
-                message,
-                commandWithValue.second
-            )
+        commandServiceLocator
+            .locate(commandWithValue.first)
+            .execute(message, commandWithValue.second)
 
     }
 

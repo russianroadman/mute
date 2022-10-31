@@ -3,16 +3,14 @@ package ru.russianroadman.mute.service.tgapi.impl
 import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.Update
-import ru.russianroadman.mute.TelegramLocation
-import ru.russianroadman.mute.service.mute.MuteLocationalSelector
-import ru.russianroadman.mute.service.mute.MuteSelector
+import ru.russianroadman.mute.service.locator.MuteStatefulServiceLocator
 import ru.russianroadman.mute.service.other.UserContext
 import ru.russianroadman.mute.service.tgapi.CommandHandler
 import ru.russianroadman.mute.service.tgapi.UpdateHandler
 
 @Service
 class TelegramUpdateHandler(
-    private val muteLocationalSelector: MuteLocationalSelector,
+    private val muteServiceLocator: MuteStatefulServiceLocator,
     private val commandHandler: CommandHandler,
     private val userContext: UserContext
 ) : UpdateHandler {
@@ -20,8 +18,10 @@ class TelegramUpdateHandler(
     override fun onUpdateReceived(update: Update) {
         val message = update.message ?: return
         userContext.put(message.chatId.toString(), message.from)
-        if (!handleMessage(message) && message.isCommand) {
+        if (message.isCommand) {
             handleCommand(message)
+        } else {
+            handleMessage(message)
         }
     }
 
@@ -29,10 +29,10 @@ class TelegramUpdateHandler(
         commandHandler.handle(message)
     }
 
-    private fun handleMessage(message: Message): Boolean {
-        return muteLocationalSelector
-            .getSelected(TelegramLocation.fromMessage(message))
-            .examine(message)
+    private fun handleMessage(message: Message) {
+        return muteServiceLocator
+            .selected()
+            .handle(message)
     }
 
 }
