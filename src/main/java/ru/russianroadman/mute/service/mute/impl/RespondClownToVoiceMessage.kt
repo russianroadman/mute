@@ -4,15 +4,15 @@ import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Message
 import ru.russianroadman.mute.data.MuteServiceKey
-import ru.russianroadman.mute.service.mute.RespondClownToVoiceMessageService
+import ru.russianroadman.mute.service.locator.MuteService
 import ru.russianroadman.mute.service.locator.MuteServiceKeyPool
 import ru.russianroadman.mute.service.tgapi.MessageSender
 
 @Service
-class RespondClownToVoiceMessageServiceImpl(
+class RespondClownToVoiceMessage(
     private val messageSender: MessageSender,
     private val keyPool: MuteServiceKeyPool
-) : RespondClownToVoiceMessageService {
+) : MuteService {
 
     override fun handle(message: Message) {
         if (message.hasVoice()) {

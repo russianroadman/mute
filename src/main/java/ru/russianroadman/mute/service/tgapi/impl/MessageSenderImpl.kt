@@ -39,4 +39,8 @@ class MessageSenderImpl(
         bot.execute(deleteMessage)
     }
 
+    override fun participate(message: Message, text: String) {
+        send(SendMessage(message.chatId.toString(), text))
+    }
+
 }

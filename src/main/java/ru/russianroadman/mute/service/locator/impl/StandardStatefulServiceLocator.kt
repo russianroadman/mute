@@ -5,7 +5,7 @@ import ru.russianroadman.mute.service.locator.Locatable
 import ru.russianroadman.mute.service.locator.StatefulServiceLocator
 
 @Service
-class StandardStatefulServiceLocator<K: Any, S: Locatable<K>>(
+class StandardStatefulServiceLocator<K : Any, S : Locatable<K>>(
     private val locator: StandardServiceLocator<K, S>
 ) : StatefulServiceLocator<K, S> {
 

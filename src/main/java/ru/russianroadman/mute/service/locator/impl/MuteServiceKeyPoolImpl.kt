@@ -4,38 +4,36 @@ import org.springframework.stereotype.Service
 import ru.russianroadman.mute.data.MuteServiceKey
 import ru.russianroadman.mute.exception.KeyIsAlreadyPresentException
 import ru.russianroadman.mute.service.locator.MuteServiceKeyPool
-import javax.naming.OperationNotSupportedException
 
 @Service
 class MuteServiceKeyPoolImpl : MuteServiceKeyPool {
 
     override var size: Int = 0
+    private val keys = mutableSetOf<MuteServiceKey>()
 
     override fun add(element: MuteServiceKey): Boolean {
-        TODO("Not yet implemented")
+        return insert(element)
     }
 
     override fun addAll(elements: Collection<MuteServiceKey>): Boolean {
-        TODO("Not yet implemented")
+        return !elements.all { !add(it) }
     }
 
     override fun clear() {
-        TODO("Not yet implemented")
+        return
     }
 
     override fun remove(element: MuteServiceKey): Boolean {
-        TODO("Not yet implemented")
+        return false
     }
 
     override fun removeAll(elements: Collection<MuteServiceKey>): Boolean {
-        TODO("Not yet implemented")
+        return false
     }
 
     override fun retainAll(elements: Collection<MuteServiceKey>): Boolean {
-        TODO("Not yet implemented")
+        return false
     }
-
-    private val keys = mutableSetOf<MuteServiceKey>()
 
     override fun contains(element: MuteServiceKey): Boolean {
         return keys.contains(element)
@@ -50,9 +48,7 @@ class MuteServiceKeyPoolImpl : MuteServiceKeyPool {
     }
 
     override fun iterator(): MutableIterator<MuteServiceKey> {
-        throw OperationNotSupportedException(
-            "Can't provide access"
-        )
+        return keys.iterator()
     }
 
     override fun insert(key: MuteServiceKey): Boolean {

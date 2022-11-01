@@ -17,28 +17,19 @@ class CommandKeyPoolImpl : CommandKeyPool {
     }
 
     override fun addAll(elements: Collection<CommandKey>): Boolean {
-        return elements.any { add(it) }
+        return !elements.all { !add(it) }
     }
 
     override fun clear() {
         return
-        throw OperationNotSupportedException(
-            "Cannot clear command key pool"
-        )
     }
 
     override fun remove(element: CommandKey): Boolean {
         return false
-        throw OperationNotSupportedException(
-            "Cannot remove element from command key pool"
-        )
     }
 
     override fun removeAll(elements: Collection<CommandKey>): Boolean {
         return false
-        throw OperationNotSupportedException(
-            "Cannot remove elements from command key pool"
-        )
     }
 
     override fun retainAll(elements: Collection<CommandKey>): Boolean {
@@ -59,9 +50,6 @@ class CommandKeyPoolImpl : CommandKeyPool {
 
     override fun iterator(): MutableIterator<CommandKey> {
         return keys.iterator()
-        throw OperationNotSupportedException(
-            "Cannot provide access"
-        )
     }
 
     override fun insert(key: CommandKey): Boolean {

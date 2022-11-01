@@ -24,5 +24,10 @@ interface MessageSender {
 
     fun delete(deleteMessage: DeleteMessage)
 
+    /**
+     * Sends text to the chat where the message came from
+     */
+    fun participate(message: Message, text: String)
+
 
 }
