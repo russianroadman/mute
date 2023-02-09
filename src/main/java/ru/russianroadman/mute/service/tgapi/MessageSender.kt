@@ -16,6 +16,8 @@ interface MessageSender {
 
     fun reply(message: SendMessage, replyTo: Int)
 
+    fun reply(message: Message, text: String)
+
     fun forward(forwardMessage: ForwardMessage)
 
     fun copy(copyMessage: CopyMessage)
@@ -23,6 +25,8 @@ interface MessageSender {
     fun answer(answer: AnswerCallbackQuery)
 
     fun delete(deleteMessage: DeleteMessage)
+
+    fun delete(message: Message)
 
     /**
      * Sends text to the chat where the message came from

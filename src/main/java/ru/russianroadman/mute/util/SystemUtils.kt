@@ -7,12 +7,10 @@ object SystemUtils {
 
     private val env = System.getenv()
 
-    @Suppress("unused")
     fun getParam(key: String): String? {
         return env[key]
     }
 
-    @Suppress("unused")
     fun getUrl(): String {
         return ServletUriComponentsBuilder
             .fromCurrentContextPath()

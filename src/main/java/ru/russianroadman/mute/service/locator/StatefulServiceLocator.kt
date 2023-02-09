@@ -1,7 +1,9 @@
 package ru.russianroadman.mute.service.locator
 
-interface StatefulServiceLocator<K, S>: ServiceLocator<K, S> {
+interface StatefulServiceLocator<T: Locatable<K>, K>: Locator<T, K>  {
 
-    fun selected(): S
+    fun select(key: K): T?
+
+    fun selected(): T
 
 }

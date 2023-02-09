@@ -2,7 +2,7 @@ package ru.russianroadman.mute.util
 
 object Constants {
 
-    val celebratingEmojisList = listOf(
+    val celebratingEmojiList = listOf(
         "😂",
         "🤣",
         "😆",
@@ -11,7 +11,7 @@ object Constants {
         "😈"
     )
 
-    val meanEmojisList = listOf(
+    val meanEmojiList = listOf(
         "🤨",
         "😤",
         "😠",
@@ -26,6 +26,8 @@ object Constants {
 
     const val poopEmoji = "💩"
     const val shushEmoji = "🤫"
+    const val clownEmoji = "🤡"
+    const val angryEmoji = "😡"
     const val defaultPenaltyDuration = 5 * 60 * 1000L
 
 }

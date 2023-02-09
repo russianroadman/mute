@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
 import org.telegram.telegrambots.meta.api.objects.Message
 import ru.russianroadman.mute.Bot
 import ru.russianroadman.mute.service.tgapi.MessageSender
+import ru.russianroadman.mute.util.TgUtils.createMessage
 
 @Service
 class MessageSenderImpl(
@@ -21,6 +22,10 @@ class MessageSenderImpl(
 
     override fun reply(message: SendMessage, replyTo: Int) {
         send(message.apply { this.replyToMessageId = replyTo })
+    }
+
+    override fun reply(message: Message, text: String) {
+        reply(createMessage(message, text), message.messageId)
     }
 
     override fun forward(forwardMessage: ForwardMessage) {
@@ -39,6 +44,14 @@ class MessageSenderImpl(
         bot.execute(deleteMessage)
     }
 
+    override fun delete(message: Message) {
+        delete(
+            DeleteMessage(
+                message.chatId.toString(),
+                message.messageId
+            )
+        )
+    }
     override fun participate(message: Message, text: String) {
         send(SendMessage(message.chatId.toString(), text))
     }
