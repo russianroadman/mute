@@ -1,5 +1,6 @@
 package ru.russianroadman.mute.service.reader.command_resolvers
 
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import ru.russianroadman.mute.service.locator.ServiceLocator
 
@@ -10,8 +11,11 @@ class CommandResolverLocator(
 ): ServiceLocator<CommandResolver, String> {
 
     private val services = services.associateBy { it.getKey() }
+    private val log = LoggerFactory.getLogger(javaClass)
 
     override fun locate(key: String): CommandResolver? {
+        log.info("attempting to locate command resolver with key: [$key]")
+        log.info("current possible keys are: ${getKeys().joinToString("; ")}")
         return services[key]
     }
 

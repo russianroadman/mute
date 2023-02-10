@@ -1,5 +1,6 @@
 package ru.russianroadman.mute.service.reader.message_resolvers
 
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import ru.russianroadman.mute.service.locator.StatefulServiceLocator
 
@@ -8,13 +9,20 @@ class StatefulMessageResolverLocator(
     private val locator: MessageResolverLocator
 ): StatefulServiceLocator<MessageResolver, String> {
 
+    private val log = LoggerFactory.getLogger(javaClass)
     private var selected = locator.locate(locator.getKeys().first())!!
 
     override fun select(key: String): MessageResolver? {
-        return locate(key)?.also { located -> selected = located }
+        log.info("attempting to select message resolver to state with key: [$key]")
+        return locate(key)?.also {
+            located -> selected = located
+            log.info("successfully selected resolver with key ${selected.getKey()}")
+        }
     }
 
     override fun selected(): MessageResolver {
+        log.info("getting selected message resolver. " +
+                "selected resolver key is: ${selected.getKey()}")
         return selected
     }
 
