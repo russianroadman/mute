@@ -1,4 +1,4 @@
-package ru.russianroadman.mute
+package ru.russianroadman.mute.location
 
 interface Location {
 

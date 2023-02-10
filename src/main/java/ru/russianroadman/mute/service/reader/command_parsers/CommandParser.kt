@@ -5,6 +5,6 @@ import ru.russianroadman.mute.service.locator.Locatable
 
 interface CommandParser: Locatable<String> {
 
-    fun parse(content: String): Command
+    fun parse(content: String, metadata: Map<String, Any?> = emptyMap()): Command
 
 }

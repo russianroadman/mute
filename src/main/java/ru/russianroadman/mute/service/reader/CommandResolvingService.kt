@@ -23,7 +23,11 @@ class CommandResolvingService(
             log.info("could not resolve command. " +
                     "update doesn't contain message with text")
         }
-        val command = parsingService.parse(defaultParserKey, update.message.text)
+        val command = parsingService.parse(
+            defaultParserKey,
+            update.message.text,
+            mapOf("chatId" to update.message.chatId)
+        )
         return commandResolverLocator
             .locate(command.name)
             ?.resolve(command)

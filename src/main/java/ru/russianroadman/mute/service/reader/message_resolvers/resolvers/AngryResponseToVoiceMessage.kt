@@ -28,7 +28,7 @@ class AngryResponseToVoiceMessage(
     }
 
     private fun getResponse(): String {
-        return Constants.angryEmoji.random().toString()
+        return Constants.meanEmojiList.random().toString()
     }
 
 }

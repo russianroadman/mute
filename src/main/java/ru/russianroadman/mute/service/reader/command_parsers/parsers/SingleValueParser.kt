@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import ru.russianroadman.mute.data.Command
 import ru.russianroadman.mute.service.reader.command_parsers.CommandParser
+import ru.russianroadman.mute.util.ParamUtils
 
 @Service
 class SingleValueParser: CommandParser {
@@ -13,7 +14,7 @@ class SingleValueParser: CommandParser {
     private val regex = Regex("^\\/[a-z|A-Z]+ *[a-z|A-Z]+ *\$")
     private val commandRegex = Regex("\\/[a-z|A-Z]+")
 
-    override fun parse(content: String): Command {
+    override fun parse(content: String, metadata: Map<String, Any?>): Command {
         log.info("attempting to parse single-value command with content: [$content]")
         if (content.matches(regex)) {
             val command = commandRegex.find(content)
@@ -21,7 +22,10 @@ class SingleValueParser: CommandParser {
                 ?: throw getException(content)
             return Command(
                 command.replace("/", "").trim(),
-                mapOf("name" to content.replace(command, "").trim())
+                mapOf(
+                    "key" to content.replace(command, "").trim(),
+                    "chatId" to ParamUtils.getString(metadata, "chatId")
+                )
             ).also {
                 log.info("created command with name: [${it.name}] and params: [${it.params}]")
             }

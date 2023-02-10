@@ -1,6 +1,7 @@
 package ru.russianroadman.mute
 
 import org.telegram.telegrambots.meta.api.objects.Message
+import ru.russianroadman.mute.location.Location
 
 class TelegramLocation(
     private val chatId: String

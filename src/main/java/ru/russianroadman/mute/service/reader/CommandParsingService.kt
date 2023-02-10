@@ -10,8 +10,8 @@ class CommandParsingService(
     private val locator: CommandParserLocator
 ) {
 
-    fun parse(key: String, content: String): Command {
-        return locator.locate(key)?.parse(content)
+    fun parse(key: String, content: String, metadata: Map<String, Any?> = emptyMap()): Command {
+        return locator.locate(key)?.parse(content, metadata)
             ?: throw RuntimeException("Could not locate [$key] command key")
     }
 
