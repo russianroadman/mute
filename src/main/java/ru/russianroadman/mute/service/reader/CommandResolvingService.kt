@@ -11,10 +11,10 @@ import ru.russianroadman.mute.service.reader.command_resolvers.CommandResolverLo
 @Service
 class CommandResolvingService(
     private val commandResolverLocator: CommandResolverLocator,
-    private val parsingService: CommandParsingService
+    private val parsingService: CommandParsingService,
+    private val settingsService: SettingsService
 ): UpdateResolver {
 
-    private val defaultParserKey = "single_value"
     private val log = LoggerFactory.getLogger(javaClass)
 
     override fun resolve(update: Update): Boolean {
@@ -24,7 +24,9 @@ class CommandResolvingService(
                     "update doesn't contain message with text")
         }
         val command = parsingService.parse(
-            defaultParserKey,
+            settingsService.get<String>(
+                update.message.chatId.toString(),"defaultParserKey"
+            ) ?: settingsService.getDefaultParserKey(),
             update.message.text,
             mapOf("chatId" to update.message.chatId)
         )
@@ -34,7 +36,7 @@ class CommandResolvingService(
             ?: false.also {
                 log.info(
                     "command resolver locating failed " +
-                            "with key ${command.name}"
+                            "with key [${command.name}]"
                 )
             }
     }

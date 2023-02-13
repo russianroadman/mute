@@ -22,6 +22,10 @@ class StatefulCommandParserLocator(
         return locator.locate(key)
     }
 
+    override fun default(): CommandParser {
+        TODO("Not yet implemented")
+    }
+
     override fun amount(): Int {
         return locator.amount()
     }

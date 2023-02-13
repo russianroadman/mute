@@ -19,6 +19,10 @@ class MessageResolverLocator(
         return services[key]
     }
 
+    override fun default(): MessageResolver {
+        return locate(getKeys().first())!!
+    }
+
     override fun amount(): Int {
         return services.size
     }

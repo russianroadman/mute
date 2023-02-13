@@ -10,6 +10,11 @@ interface Locator<T, K> {
     fun locate(key: K): T?
 
     /**
+     * Retrieve default service
+     */
+    fun default(): T
+
+    /**
     * Get total amount of actual services contained in this locator
     */
     fun amount(): Int

@@ -32,13 +32,15 @@ class LocationalMessageResolverLocator(
                     "selected resolver key is: ${it.getKey()}"
                 )
             }
-            ?: throw RuntimeException(
-                "could not locate message resolver at location ${location.getId()}"
-            )
+            ?: default()
     }
 
     override fun locate(key: String): MessageResolver? {
         return locator.locate(key)
+    }
+
+    override fun default(): MessageResolver {
+        return locator.default()
     }
 
     override fun amount(): Int {

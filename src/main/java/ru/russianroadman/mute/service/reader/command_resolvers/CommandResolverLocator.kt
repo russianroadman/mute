@@ -19,6 +19,10 @@ class CommandResolverLocator(
         return services[key]
     }
 
+    override fun default(): CommandResolver {
+        TODO("Not yet implemented")
+    }
+
     override fun amount(): Int {
         return services.size
     }

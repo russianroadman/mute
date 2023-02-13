@@ -19,6 +19,10 @@ class CommandParserLocator(
         return parsers[key]
     }
 
+    override fun default(): CommandParser {
+        TODO("Not yet implemented")
+    }
+
     override fun amount(): Int {
         return parsers.size
     }

@@ -22,6 +22,10 @@ class StatefulCommandResolverLocator(
         return locator.locate(key)
     }
 
+    override fun default(): CommandResolver {
+        TODO("Not yet implemented")
+    }
+
     override fun amount(): Int {
         return locator.amount()
     }

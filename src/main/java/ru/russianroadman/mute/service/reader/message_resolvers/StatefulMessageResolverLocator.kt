@@ -10,7 +10,7 @@ class StatefulMessageResolverLocator(
 ): StatefulServiceLocator<MessageResolver, String> {
 
     private val log = LoggerFactory.getLogger(javaClass)
-    private var selected = locator.locate(locator.getKeys().first())!!
+    private var selected = locator.default()
 
     override fun select(key: String): MessageResolver? {
         log.info("attempting to select message resolver to state with key: [$key]")
@@ -28,6 +28,10 @@ class StatefulMessageResolverLocator(
 
     override fun locate(key: String): MessageResolver? {
         return locator.locate(key)
+    }
+
+    override fun default(): MessageResolver {
+        TODO("Not yet implemented")
     }
 
     override fun amount(): Int {

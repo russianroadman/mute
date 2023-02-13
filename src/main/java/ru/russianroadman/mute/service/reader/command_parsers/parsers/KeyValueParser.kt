@@ -4,18 +4,22 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import ru.russianroadman.mute.data.Command
 import ru.russianroadman.mute.service.reader.command_parsers.CommandParser
-import ru.russianroadman.mute.util.ParamUtils
 
 @Service
-class SingleValueParser: CommandParser {
+class KeyValueParser: CommandParser {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
-    private val regex = Regex("^\\/[a-z|A-Z]+ *([a-z|A-Z]|_)+ *\$")
+    private val regex = Regex("^\\/[a-z|A-Z]+ *([a-z|A-Z]+=(([a-z|A-Z])|(\\d+)|(_))+; *)+ *\$")
     private val commandRegex = Regex("\\/[a-z|A-Z]+")
+    private val keyValueRegex = Regex("[a-z|A-Z]+=(([a-z|A-Z])|(\\d+)|(_))+")
+
+    override fun getKey(): String {
+        return "key_value"
+    }
 
     override fun parse(content: String, metadata: Map<String, Any?>): Command {
-        log.info("attempting to parse single-value command with content: [$content]")
+        log.info("attempting to parse key-value command with content: [$content]")
         if (content.matches(regex)) {
 
             val commandName = commandRegex
@@ -25,13 +29,18 @@ class SingleValueParser: CommandParser {
                 ?.trim()
                 ?: throw getException(content)
 
-            return Command(
-                commandName,
-                mapOf(
-                    "key" to content.replace("/", "").replace(commandName, "").trim(),
-                    "chatId" to ParamUtils.getString(metadata, "chatId")
-                )
-            ).also {
+            val params = keyValueRegex
+                .findAll(content)
+                .map {
+                    val entry = it.value.split("=")
+                    Pair(entry[0], entry[1])
+                }
+                .toMap()
+                .toMutableMap()
+
+            params["chatId"] = metadata["chatId"].toString()
+
+            return Command(commandName, params).also {
                 log.info("created command with name: [${it.name}] " +
                         "and params: [${it.params}]")
             }
@@ -40,12 +49,8 @@ class SingleValueParser: CommandParser {
         throw getException(content)
     }
 
-    override fun getKey(): String {
-        return "single_value"
-    }
-
     private fun getException(content: String): RuntimeException {
-        return RuntimeException("Failed attempt to parse single-value command: [$content]")
+        return RuntimeException("Failed attempt to parse key-value command: [$content]")
     }
 
 }
